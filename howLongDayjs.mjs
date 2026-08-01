@@ -1,10 +1,15 @@
 import dayjs from 'https://cdn.jsdelivr.net/npm/dayjs@1.11.21/+esm'
+import utc from 'https://cdn.jsdelivr.net/npm/dayjs@1.11.21/plugin/utc.js/+esm'
+import timezone from 'https://cdn.jsdelivr.net/npm/dayjs@1.11.21/plugin/timezone.js/+esm'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const durationNode = document.getElementById('duration');
 
 const getHowLongString = () => {
   const now = dayjs()
-  const startedWorking = dayjs('2018-08-01')
+  const startedWorking = dayjs.tz('2018-09-03 09:00:00', 'Europe/Vilnius')
 
   const years = now.diff(startedWorking, 'years');
   const afterYears = startedWorking.add(years, 'years')
@@ -27,7 +32,6 @@ const getHowLongString = () => {
 }
 
 durationNode.textContent = getHowLongString()
-
 setInterval(() => {
   durationNode.textContent = getHowLongString()
 }, 1000);
