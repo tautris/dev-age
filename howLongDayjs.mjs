@@ -5,20 +5,21 @@ import timezone from 'https://cdn.jsdelivr.net/npm/dayjs@1.11.21/plugin/timezone
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
+const TIME_ZONE = 'Europe/Vilnius'
 const durationNode = document.getElementById('duration');
 
 const getHowLongString = () => {
-  const now = dayjs()
-  const startedWorking = dayjs.tz('2018-09-03 09:00:00', 'Europe/Vilnius')
+  const now = dayjs().tz(TIME_ZONE)
+  const startedWorking = dayjs.tz('2018-09-03 09:00:00', TIME_ZONE)
 
   const years = now.diff(startedWorking, 'years');
-  const afterYears = startedWorking.add(years, 'years')
+  const afterYears = startedWorking.add(years, 'years').tz(TIME_ZONE, true)
 
   const months = now.diff(afterYears, 'months');
-  const afterMonths = afterYears.add(months, 'months')
+  const afterMonths = afterYears.add(months, 'months').tz(TIME_ZONE, true)
 
   const days = now.diff(afterMonths, 'days');
-  const afterDays = afterMonths.add(days, 'days')
+  const afterDays = afterMonths.add(days, 'days').tz(TIME_ZONE, true)
 
   const hours = now.diff(afterDays, 'hours');
   const afterHours = afterDays.add(hours, 'hours')
