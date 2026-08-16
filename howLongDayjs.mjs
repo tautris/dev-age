@@ -1,7 +1,6 @@
 const TIME_ZONE = 'Europe/Vilnius'
 const durationNode = document.getElementById('duration');
 
-
 try {
   const [
     {default: dayjs},
@@ -40,13 +39,13 @@ try {
     return `I'm already working with software commercially for ${years} years ${months} months ${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`
   }
 
-  durationNode.textContent = getHowLongString()
+  durationNode.value = getHowLongString()
   setInterval(() => {
-    durationNode.textContent = getHowLongString()
+    durationNode.value = getHowLongString()
   }, 1000);
 } catch (error) {
   console.error('Failed to start the counter', error)
 
-  durationNode.textContent =
+  durationNode.value =
     'Commercial software experience since September 3, 2018.'
 }

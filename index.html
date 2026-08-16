@@ -11,7 +11,47 @@
 <body>
 <main>
   <h1>How much software development experience does Tautrimas Gumbys have?</h1>
-  <time id="duration"></time>
+
+  <p>
+    Commercially developing software since <time datetime="2018-09-03T09:00:00+03:00">3 September 2018</time>.
+  </p>
+
+  <form id="calculator">
+    <fieldset>
+      <legend>Calculation engine</legend>
+
+      <label>
+        <input
+          id="engine-dayjs"
+          type="radio"
+          name="engine"
+          value="dayjs"
+          checked
+        >
+        Day.js
+      </label>
+
+      <label>
+        <input
+          id="engine-temporal"
+          type="radio"
+          name="engine"
+          value="temporal"
+        >
+        Temporal API
+      </label>
+    </fieldset>
+
+    <p>
+      <output
+        id="duration"
+        for="engine-dayjs engine-temporal"
+        aria-live="off"
+      >
+        Calculating experience…
+      </output>
+    </p>
+  </form>
 </main>
 </body>
 </html>
