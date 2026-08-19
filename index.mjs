@@ -32,7 +32,8 @@ const selectEngine = async (engineName) => {
     durationNode.value = getHowLongString()
   } catch (error) {
     if (engineName !== selectedEngine()) return
-
+    // TODO: consider to surface the error in UI.
+    //  Especially interested to display Temporal API support not available case to the user. Also dayjs CDN not available is interesting to surface
     console.error(`Failed to start the ${engineName} engine`, error)
     durationNode.value = FALLBACK_MESSAGE
   }
