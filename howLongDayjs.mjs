@@ -29,13 +29,13 @@ export const getHowLongString = () => {
   const days = now.diff(afterMonths, 'days')
   const afterDays = afterMonths.add(days, 'days').tz(TIME_ZONE, true)
 
-  const hours = now.diff(afterDays, 'hours')
-  const afterHours = afterDays.add(hours, 'hours')
-
-  const minutes = now.diff(afterHours, 'minutes')
-  const afterMinutes = afterHours.add(minutes, 'minutes')
-
-  const seconds = now.diff(afterMinutes, 'seconds')
+  // Years, months, and days are calendar units, so they preserve the local clock time.
+  // Smaller units use elapsed time because Day.js can retain the old UTC offset in edge cases when
+  // adding across a DST boundary, producing potentially wrong minute and second remainders.
+  const remainingSeconds = Math.trunc((now.valueOf() - afterDays.valueOf()) / 1000)
+  const hours = Math.trunc(remainingSeconds / 3600)
+  const minutes = Math.trunc((remainingSeconds % 3600) / 60)
+  const seconds = remainingSeconds % 60
 
   return `I'm already working with software commercially for ${years} years ${months} months ${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`
 }
