@@ -1,4 +1,5 @@
 import {STARTED_WORKING_AT, TIME_ZONE,} from './experienceConfig.mjs'
+import {EngineUnavailableError} from './engineUnavailableError.mjs'
 
 const [
   {default: dayjs},
@@ -9,7 +10,10 @@ const [
   import('https://cdn.jsdelivr.net/npm/dayjs@1.11.21/plugin/utc.js/+esm'),
   import('https://cdn.jsdelivr.net/npm/dayjs@1.11.21/plugin/timezone.js/+esm'),
 ]).catch((error) => {
-  throw new Error(`Failed to load Day.js from the CDN: ${error}`)
+  throw new EngineUnavailableError(
+    'Day.js could not be loaded from the CDN. Check your internet connection and try again.',
+    {cause: error},
+  )
 })
 
 dayjs.extend(utc)

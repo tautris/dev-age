@@ -1,3 +1,5 @@
+import {EngineUnavailableError} from './engineUnavailableError.mjs'
+
 const FALLBACK_MESSAGE =
   'Commercial software experience since September 3, 2018.'
 const UPDATE_INTERVAL_MS = 1000
@@ -8,20 +10,48 @@ const engineModules = {
 
 const calculatorNode = document.getElementById('calculator')
 const durationNode = document.getElementById('duration')
+const engineErrorNode = document.getElementById('engine-error')
 
 let getHowLongString
 
 const selectedEngine = () => calculatorNode.elements.engine.value
 
+const hideEngineError = () => {
+  engineErrorNode.hidden = true
+  engineErrorNode.textContent = ''
+}
+
+const showEngineError = (error) => {
+  const message =
+    error instanceof EngineUnavailableError
+      ? error.message
+      : 'The selected calculation engine could not be started.'
+
+  engineErrorNode.textContent = `${message} Showing the start date instead.`
+  engineErrorNode.hidden = false
+}
+
+const handleEngineFailure = (logMessage, error) => {
+  getHowLongString = undefined
+  console.error(logMessage, error)
+  durationNode.value = FALLBACK_MESSAGE
+  showEngineError(error)
+}
+
 const updateDuration = () => {
-  if (getHowLongString) {
+  if (!getHowLongString) return
+
+  try {
     durationNode.value = getHowLongString()
+  } catch (error) {
+    handleEngineFailure(`The ${selectedEngine()} engine failed to update`, error)
   }
 }
 
 const selectEngine = async (engineName) => {
   getHowLongString = undefined
   durationNode.value = 'Calculating experience…'
+  hideEngineError()
 
   try {
     const engineModule = await import(engineModules[engineName])
@@ -32,10 +62,8 @@ const selectEngine = async (engineName) => {
     durationNode.value = getHowLongString()
   } catch (error) {
     if (engineName !== selectedEngine()) return
-    // TODO: consider to surface the error in UI.
-    //  Especially interested to display Temporal API support not available case to the user. Also dayjs CDN not available is interesting to surface
-    console.error(`Failed to start the ${engineName} engine`, error)
-    durationNode.value = FALLBACK_MESSAGE
+
+    handleEngineFailure(`Failed to start the ${engineName} engine`, error)
   }
 }
 
