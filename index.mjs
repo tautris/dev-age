@@ -1,4 +1,5 @@
 import {EngineUnavailableError} from './engineUnavailableError.mjs'
+import { DISPLAYED_UNITS } from "./experienceConfig.mjs";
 
 const FALLBACK_MESSAGE =
   'Commercial software experience since September 3, 2018.'
@@ -14,9 +15,13 @@ const engineErrorNode = document.getElementById('engine-error')
 
 let getHowLong
 
-const getHowLongString = () => {
-  const {years, months, days, hours, minutes, seconds} = getHowLong()
-  return `I'm already working with software commercially for ${years} years ${months} months ${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`
+const formatDuration = (duration) => {
+  const formatted = DISPLAYED_UNITS.map((unit) => {
+    const value = duration[unit]
+    return `${value} ${value === 1 ? unit.slice(0, -1) : unit}`
+  }).join(' ')
+
+  return `I've been building software commercially for ${formatted}.`
 }
 
 const selectedEngine = () => calculatorNode.elements.engine.value
@@ -47,7 +52,7 @@ const updateDuration = () => {
   if (!getHowLong) return
 
   try {
-    durationNode.value = getHowLongString()
+    durationNode.value = formatDuration(getHowLong())
   } catch (error) {
     handleEngineFailure(`The ${selectedEngine()} engine failed to update`, error)
   }
@@ -64,7 +69,7 @@ const selectEngine = async (engineName) => {
     if (engineName !== selectedEngine()) return
 
     getHowLong = engineModule.getHowLong
-    durationNode.value = getHowLongString()
+    durationNode.value = formatDuration(getHowLong())
   } catch (error) {
     if (engineName !== selectedEngine()) return
 
