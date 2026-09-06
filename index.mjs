@@ -12,7 +12,12 @@ const calculatorNode = document.getElementById('calculator')
 const durationNode = document.getElementById('duration')
 const engineErrorNode = document.getElementById('engine-error')
 
-let getHowLongString
+let getHowLong
+
+const getHowLongString = () => {
+  const {years, months, days, hours, minutes, seconds} = getHowLong()
+  return `I'm already working with software commercially for ${years} years ${months} months ${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`
+}
 
 const selectedEngine = () => calculatorNode.elements.engine.value
 
@@ -32,14 +37,14 @@ const showEngineError = (error) => {
 }
 
 const handleEngineFailure = (logMessage, error) => {
-  getHowLongString = undefined
+  getHowLong = undefined
   console.error(logMessage, error)
   durationNode.value = FALLBACK_MESSAGE
   showEngineError(error)
 }
 
 const updateDuration = () => {
-  if (!getHowLongString) return
+  if (!getHowLong) return
 
   try {
     durationNode.value = getHowLongString()
@@ -49,7 +54,7 @@ const updateDuration = () => {
 }
 
 const selectEngine = async (engineName) => {
-  getHowLongString = undefined
+  getHowLong = undefined
   durationNode.value = 'Calculating experience…'
   hideEngineError()
 
@@ -58,7 +63,7 @@ const selectEngine = async (engineName) => {
 
     if (engineName !== selectedEngine()) return
 
-    getHowLongString = engineModule.getHowLongString
+    getHowLong = engineModule.getHowLong
     durationNode.value = getHowLongString()
   } catch (error) {
     if (engineName !== selectedEngine()) return

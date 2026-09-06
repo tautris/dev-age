@@ -21,7 +21,7 @@ dayjs.extend(timezone)
 
 const startedWorking = dayjs.tz(STARTED_WORKING_AT, TIME_ZONE)
 
-export const getHowLongString = () => {
+export const getHowLong = () => {
   const now = dayjs().tz(TIME_ZONE)
 
   const years = now.diff(startedWorking, 'years')
@@ -41,5 +41,5 @@ export const getHowLongString = () => {
   const minutes = Math.trunc((remainingSeconds % 3600) / 60)
   const seconds = remainingSeconds % 60
 
-  return `I'm already working with software commercially for ${years} years ${months} months ${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`
+  return {years, months, days, hours, minutes, seconds}
 }

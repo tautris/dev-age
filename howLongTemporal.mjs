@@ -10,10 +10,10 @@ if (!Temporal) {
 
 const startedWorking = Temporal.PlainDateTime.from(STARTED_WORKING_AT).toZonedDateTime(TIME_ZONE)
 
-export const getHowLongString = () => {
+export const getHowLong = () => {
   const now = Temporal.Now.zonedDateTimeISO(TIME_ZONE);
 
-  const diff = startedWorking.until(now, {largestUnit: "years", smallestUnit: "seconds"});
+  const {years, months, days, hours, minutes, seconds } = startedWorking.until(now, {largestUnit: "years", smallestUnit: "seconds"});
 
-  return `I'm already working with software commercially for ${diff.years} years ${diff.months} months ${diff.days} days ${diff.hours} hours ${diff.minutes} minutes ${diff.seconds} seconds`
+  return {years, months, days, hours, minutes, seconds}
 }
