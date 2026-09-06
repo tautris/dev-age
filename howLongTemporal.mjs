@@ -10,9 +10,7 @@ if (!Temporal) {
 
 const startedWorking = Temporal.PlainDateTime.from(STARTED_WORKING_AT).toZonedDateTime(TIME_ZONE)
 
-export const getHowLong = () => {
-  const now = Temporal.Now.zonedDateTimeISO(TIME_ZONE);
-
+export const getHowLong = (now = Temporal.Now.zonedDateTimeISO(TIME_ZONE)) => {
   const {years, months, days, hours, minutes, seconds } = startedWorking.until(now, {largestUnit: "years", smallestUnit: "seconds"});
 
   return {years, months, days, hours, minutes, seconds}

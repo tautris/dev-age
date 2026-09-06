@@ -21,9 +21,7 @@ dayjs.extend(timezone)
 
 const startedWorking = dayjs.tz(STARTED_WORKING_AT, TIME_ZONE)
 
-export const getHowLong = () => {
-  const now = dayjs().tz(TIME_ZONE)
-
+export const getHowLong = (now = dayjs().tz(TIME_ZONE)) => {
   const years = now.diff(startedWorking, 'years')
   const afterYears = startedWorking.add(years, 'years').tz(TIME_ZONE, true)
 
