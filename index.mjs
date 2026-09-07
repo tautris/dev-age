@@ -12,6 +12,7 @@ const engineModules = {
 const calculatorNode = document.getElementById('calculator')
 const durationNode = document.getElementById('duration')
 const engineErrorNode = document.getElementById('engine-error')
+const durationCodeNode = document.getElementById('duration-code')
 
 let getHowLong
 
@@ -21,7 +22,7 @@ const formatDuration = (duration) => {
     return `${value} ${value === 1 ? unit.slice(0, -1) : unit}`
   }).join(' ')
 
-  return `I've been building software commercially for ${formatted}.`
+  return `I've been developing software commercially for ${formatted}.`
 }
 
 const selectedEngine = () => calculatorNode.elements.engine.value
@@ -61,6 +62,7 @@ const updateDuration = () => {
 const selectEngine = async (engineName) => {
   getHowLong = undefined
   durationNode.value = 'Calculating experience…'
+  durationCodeNode.textContent = ''
   hideEngineError()
 
   try {
@@ -69,6 +71,7 @@ const selectEngine = async (engineName) => {
     if (engineName !== selectedEngine()) return
 
     getHowLong = engineModule.getHowLong
+    durationCodeNode.textContent = `${getHowLong.toString()}`
     durationNode.value = formatDuration(getHowLong())
   } catch (error) {
     if (engineName !== selectedEngine()) return
